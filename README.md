@@ -11,7 +11,7 @@ The command interpreter is a command-line interface (CLI) tool developed for man
 ## How to Start the Command Interpreter:
 1. Clone the repository from GitHub:
 ```
-git clone https://github.com/your_username/AirBnB_clone.git
+git clone https://github.com/AbduHany/AirBnB_clone.git
 ```
 2. Navigate to the project directory:
 ```
