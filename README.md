@@ -1,5 +1,7 @@
 # AirBnB Clone Project - README
 
+![Website logo](Assets/HBNB IMAGE.png)
+
 ## Project Description:
 This project aims to develop an AirBnB clone, a web-based platform that connects travelers with hosts who have accommodations available for rent. The clone will replicate key features of the original AirBnB platform, including user authentication, property listings, booking management, and reviews.
 
