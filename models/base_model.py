@@ -9,15 +9,26 @@ class BaseModel:
     """ This class defines all common attributes/methods
     for other classes in the AirBnB_clone project
     """
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """ This method initializes a BaseModel object/instance.
         Assigns id attribute with uuid4(), created_at with the
         datetime object when the instance is created, and
         updated_at with the datetime object when the instance is updated.
         """
-        self.id = str(uuid.uuid4().hex)
-        self.created_at = datetime.datetime.now()
-        self.updated_at = self.created_at
+        if not kwargs:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
+        else:
+            for key, value in kwargs.items():
+                if key == '__class__':
+                    continue
+                elif key == 'created_at':
+                    self.__dict__[key] = datetime.datetime.fromisoformat(value)
+                elif key == 'updated_at':
+                    self.__dict__[key] = datetime.datetime.fromisoformat(value)
+                else:
+                    self.__dict__[key] = value
 
     def __str__(self):
         """ This method prints the string representation of a BaseModel
@@ -37,7 +48,7 @@ class BaseModel:
         of __dict__ of the instance
         """
         instance_dict = dict(self.__dict__)
-        instance_dict['__clas__'] = self.__class__.__name__
+        instance_dict['__class__'] = self.__class__.__name__
         instance_dict['created_at'] = self.created_at.isoformat()
         instance_dict['updated_at'] = self.updated_at.isoformat()
         return (instance_dict)
