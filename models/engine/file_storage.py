@@ -43,11 +43,15 @@ class FileStorage:
         otherwise, it'll do nothing.
         """
         from models.base_model import BaseModel
+        from models.user import User
         if (os.path.exists(FileStorage.__file_path) and
                 os.path.isfile(FileStorage.__file_path)):
             with open(FileStorage.__file_path, "r") as f:
                 loaded = json.loads(f.read())
                 for key, value in loaded.items():
-                    FileStorage.__objects[key] = BaseModel(**value)
+                    if value['__class__'] == "BaseModel":
+                        FileStorage.__objects[key] = BaseModel(**value)
+                    elif value['__class__'] == "User":
+                        FileStorage.__objects[key] = User(**value)
         else:
             pass
