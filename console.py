@@ -7,6 +7,11 @@ import shlex
 import cmd
 from models.base_model import BaseModel
 from models.user import User
+from models.city import City
+from models.state import State
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 from models import storage
 
 
@@ -40,12 +45,33 @@ class HBNBCommand(cmd.Cmd):
         """
         if line == "":
             print("** class name missing **")
-        elif line == "BaseModel":
+        args = shlex.split(line)
+        if args[0] == "BaseModel":
             a = BaseModel()
             a.save()
             print(a.id)
-        elif line == "User":
+        elif args[0] == "User":
             a = User()
+            a.save()
+            print(a.id)
+        elif args[0] == "Place":
+            a = Place()
+            a.save()
+            print(a.id)
+        elif args[0] == "State":
+            a = State()
+            a.save()
+            print(a.id)
+        elif args[0] == "City":
+            a = City()
+            a.save()
+            print(a.id)
+        elif args[0] == "Amenity":
+            a = Amenity()
+            a.save()
+            print(a.id)
+        elif args[0] == "Review":
+            a = Review()
             a.save()
             print(a.id)
         else:
@@ -57,7 +83,8 @@ class HBNBCommand(cmd.Cmd):
         """
         args = shlex.split(line)
         objdict = storage.all()
-        classes_set = {'BaseModel', 'User'}
+        classes_set = {'BaseModel', 'User', 'State', 'City',
+                       'Amenity', 'Place', 'Review'}
         if len(args) >= 2:
             searchkey = "{}.{}".format(args[0], args[1])
 
@@ -78,7 +105,8 @@ class HBNBCommand(cmd.Cmd):
 
         args = shlex.split(line)
         objdict = storage.all()
-        classes_set = {'BaseModel', 'User'}
+        classes_set = {'BaseModel', 'User', 'State', 'City',
+                       'Amenity', 'Place', 'Review'}
         if len(args) >= 2:
             searchkey = "{}.{}".format(args[0], args[1])
 
@@ -100,7 +128,8 @@ class HBNBCommand(cmd.Cmd):
         """
         args = shlex.split(line)
         objdict = storage.all()
-        classes_set = {'BaseModel', 'User'}
+        classes_set = {'BaseModel', 'User', 'State', 'City',
+                       'Amenity', 'Place', 'Review'}
         strlist = []
         if len(args) == 0:
             for key, value in objdict.items():
@@ -122,7 +151,8 @@ class HBNBCommand(cmd.Cmd):
         if len(args) >= 2:
             searchkey = "{}.{}".format(args[0], args[1])
         objdict = storage.all()
-        classes_set = {'BaseModel', 'User'}
+        classes_set = {'BaseModel', 'User', 'State', 'City',
+                       'Amenity', 'Place', 'Review'}
         if len(args) == 0:
             print("** class name missing **")
         elif args[0] not in classes_set:
@@ -136,13 +166,14 @@ class HBNBCommand(cmd.Cmd):
         elif (searchkey in objdict.keys()) and (len(args) == 3):
             print("** value missing **")
         elif (searchkey in objdict.keys()) and (len(args) >= 4):
-            obj_to_change = objdict[searchkey]
+            obj_to_chg = objdict[searchkey]
             attr_name = args[2]
             attr_val = args[3]
-            if attr_name in obj_to_change.__dict__.keys():
-                attr_val = obj_to_change.__dict__[attr_name].__class__(attr_val)
-            obj_to_change.__dict__[attr_name] = attr_val
+            if attr_name in obj_to_chg.__dict__.keys():
+                attr_val = obj_to_chg.__dict__[attr_name].__class__(attr_val)
+            obj_to_chg.__dict__[attr_name] = attr_val
             storage.save()
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
