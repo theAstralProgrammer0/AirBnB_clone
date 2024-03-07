@@ -3,6 +3,7 @@
 This program contains the entry point of the command interpreter which serves
 as the front-end for testing and prototyping the backend
 """
+import shlex
 import cmd
 from models.base_model import BaseModel
 from models import storage
@@ -49,12 +50,13 @@ class HBNBCommand(cmd.Cmd):
         """Prints the string representation of an instance based on the
         class name and id
         """
-        args = line.split()
+        args = shlex.split(line)
         objdict = storage.all()
-        classes_set = set()
+        classes_set = {'BaseModel'}
+        if len(args) >= 2:
+            searchkey = "{}.{}".format(args[0], args[1])
         ids_set = set()
         for key, value in objdict.items():
-            classes_set.add(value.__class__.__name__)
             ids_set.add(value.id)
 
         if len(args) == 0:
@@ -72,12 +74,11 @@ class HBNBCommand(cmd.Cmd):
         """Deletes an instance based on the class name and id
         """
 
-        args = line.split()
+        args = shlex.split(line)
         objdict = storage.all()
-        classes_set = set()
+        classes_set = {'BaseModel'}
         ids_set = set()
         for key, value in objdict.items():
-            classes_set.add(value.__class__.__name__)
             ids_set.add(value.id)
 
         if len(args) == 0:
@@ -92,6 +93,55 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** no instance found **")
 
+    def do_all(self, line):
+        """Prints all string representation of all instances based or
+        not on the class name.
+        """
+        args = shlex.split(line)
+        objdict = storage.all()
+        classes_set = {'BaseModel'}
+        strlist = []
+        if len(args) == 0:
+            for key, value in objdict.items():
+                strlist.append(str(value))
+            print(strlist)
+        elif args[0] not in classes_set:
+            print("** class doesn't exist **")
+        else:
+            for key, value in objdict.items():
+                if (value.__class__.__name__ == args[0]):
+                    strlist.append(str(value))
+            print(strlist)
+
+    def do_update(self, line):
+        """Updates an instance based on the class name and id by adding
+        or updating attribute
+        """
+        args = shlex.split(line)
+        if len(args) >= 2:
+            searchkey = "{}.{}".format(args[0], args[1])
+        objdict = storage.all()
+        classes_set = {'BaseModel'}
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] not in classes_set:
+            print("** class doesn't exist **")
+        elif (args[0] in classes_set) and (len(args) == 1):
+            print("** instance id missing **")
+        elif (searchkey not in objdict.keys()):
+            print("** no instance found **")
+        elif (searchkey in objdict.keys()) and (len(args) == 2):
+            print("** attribute name missing **")
+        elif (searchkey in objdict.keys()) and (len(args) == 3):
+            print("** value missing **")
+        elif (searchkey in objdict.keys()) and (len(args) >= 4):
+            obj_to_change = objdict[searchkey]
+            attr_name = args[2]
+            attr_val = args[3]
+            if attr_name in obj_to_change.__dict__.keys():
+                attr_val = obj_to_change.__dict__[attr_name].__class__(attr_val)
+            obj_to_change.__dict__[attr_name] = attr_val
+            storage.save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
