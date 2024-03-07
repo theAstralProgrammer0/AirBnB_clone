@@ -6,6 +6,7 @@ as the front-end for testing and prototyping the backend
 import shlex
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
@@ -43,6 +44,10 @@ class HBNBCommand(cmd.Cmd):
             a = BaseModel()
             a.save()
             print(a.id)
+        elif line == "User":
+            a = User()
+            a.save()
+            print(a.id)
         else:
             print("** class doesn't exist **")
 
@@ -52,12 +57,9 @@ class HBNBCommand(cmd.Cmd):
         """
         args = shlex.split(line)
         objdict = storage.all()
-        classes_set = {'BaseModel'}
+        classes_set = {'BaseModel', 'User'}
         if len(args) >= 2:
             searchkey = "{}.{}".format(args[0], args[1])
-        ids_set = set()
-        for key, value in objdict.items():
-            ids_set.add(value.id)
 
         if len(args) == 0:
             print("** class name missing **")
@@ -65,10 +67,10 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif (args[0] in classes_set) and (len(args) == 1):
             print("** instance id missing **")
-        elif (args[0] in classes_set) and (args[1] in ids_set):
-            print(objdict["{}.{}".format(args[0], args[1])])
-        else:
+        elif (searchkey not in objdict.keys()):
             print("** no instance found **")
+        else:
+            print(objdict[searchkey])
 
     def do_destroy(self, line):
         """Deletes an instance based on the class name and id
@@ -76,10 +78,9 @@ class HBNBCommand(cmd.Cmd):
 
         args = shlex.split(line)
         objdict = storage.all()
-        classes_set = {'BaseModel'}
-        ids_set = set()
-        for key, value in objdict.items():
-            ids_set.add(value.id)
+        classes_set = {'BaseModel', 'User'}
+        if len(args) >= 2:
+            searchkey = "{}.{}".format(args[0], args[1])
 
         if len(args) == 0:
             print("** class name missing **")
@@ -87,11 +88,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif (args[0] in classes_set) and (len(args) == 1):
             print("** instance id missing **")
-        elif (args[0] in classes_set) and (args[1] in ids_set):
-            del objdict["{}.{}".format(args[0], args[1])]
-            storage.save()
-        else:
+        elif (searchkey not in objdict.keys()):
             print("** no instance found **")
+        else:
+            del objdict[searchkey]
+            storage.save()
 
     def do_all(self, line):
         """Prints all string representation of all instances based or
@@ -99,7 +100,7 @@ class HBNBCommand(cmd.Cmd):
         """
         args = shlex.split(line)
         objdict = storage.all()
-        classes_set = {'BaseModel'}
+        classes_set = {'BaseModel', 'User'}
         strlist = []
         if len(args) == 0:
             for key, value in objdict.items():
@@ -121,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) >= 2:
             searchkey = "{}.{}".format(args[0], args[1])
         objdict = storage.all()
-        classes_set = {'BaseModel'}
+        classes_set = {'BaseModel', 'User'}
         if len(args) == 0:
             print("** class name missing **")
         elif args[0] not in classes_set:
