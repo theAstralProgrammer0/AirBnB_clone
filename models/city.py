@@ -2,6 +2,7 @@
 """This is the module that contains the structure of the City class
 """
 from models.base_model import BaseModel
+from models import storage
 
 
 class City(BaseModel):

@@ -5,8 +5,8 @@ from models.base_model import BaseModel
 
 
 class Place(BaseModel):
-     """This is the class that contains the attributes and methods of the
-       Place class
+    """This is the class that contains the attributes and methods of the
+        Place class
     """
     city_id = ''
     user_id = ''
