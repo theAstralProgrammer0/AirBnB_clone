@@ -174,6 +174,27 @@ class HBNBCommand(cmd.Cmd):
             obj_to_chg.__dict__[attr_name] = attr_val
             storage.save()
 
+    def default(self, line):
+        """Determines how the console acts in case an unkown command is passed
+        """
+        commands = {
+            "show": self.do_show,
+            "create": self.do_create,
+            "destroy": self.do_destroy,
+            "update": self.do_update,
+            "all": self.do_all}
+        for sep in ['.', '(', ')', ',']:
+            line = line.replace(sep, ' ')
+        args = shlex.split(line)
+        if len(args) <= 1:
+            pass
+        else:
+            if args[1] in commands.keys():
+                command = str(args[1])
+                args.pop(1)
+                line_str = " ".join(args)
+                commands[command](line_str)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
