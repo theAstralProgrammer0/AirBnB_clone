@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
-"""This is the module that contains the structure of the User class
+"""This is the module that contains the structure of the Review class
 """
 from models.base_model import BaseModel
 
 
-class User(BaseModel):
+class Review(BaseModel):
     """This is the class that contains the attributes and methods of the
-       User class
+       Review class
     """
-    email = ''
-    password = ''
-    first_name = ''
-    last_name = ''
+    place_id = ''
+    user_id = ''
+    text = ''
 
     def __init__(self, *args, **kwargs):
-        """This method instantiates a new User object which is an instance
+        """This method instantiates a new Review object which is an instance
            of BaseModel
         """
         super().__init__(**kwargs)
