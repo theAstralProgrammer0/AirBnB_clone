@@ -43,7 +43,11 @@ class FileStorage:
         otherwise, it'll do nothing.
         """
         from models.base_model import BaseModel
-        from models import state, city, amenity, review, place
+        from models.city import City
+        from models.state import State
+        from models.place import Place
+        from models.amenity import Amenity
+        from models.review import Review
         from models.user import User
 
         if (os.path.exists(FileStorage.__file_path) and
@@ -56,14 +60,14 @@ class FileStorage:
                     elif value['__class__'] == "User":
                         FileStorage.__objects[key] = User(**value)
                     elif value['__class__'] == "Place":
-                        FileStorage.__objects[key] = place.Place(**value)
+                        FileStorage.__objects[key] = Place(**value)
                     elif value['__class__'] == "State":
-                        FileStorage.__objects[key] = state.State(**value)
+                        FileStorage.__objects[key] = State(**value)
                     elif value['__class__'] == "City":
-                        FileStorage.__objects[key] = city.City(**value)
+                        FileStorage.__objects[key] = City(**value)
                     elif value['__class__'] == "Amenity":
-                        FileStorage.__objects[key] = amenity.Amenity(**value)
+                        FileStorage.__objects[key] = Amenity(**value)
                     elif value['__class__'] == "Review":
-                        FileStorage.__objects[key] = review.Review(**value)
+                        FileStorage.__objects[key] = Review(**value)
         else:
             pass
