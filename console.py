@@ -102,7 +102,6 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, line):
         """Deletes an instance based on the class name and id
         """
-
         args = shlex.split(line)
         objdict = storage.all()
         classes_set = {'BaseModel', 'User', 'State', 'City',
@@ -143,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
                     strlist.append(str(value))
             print(strlist)
 
-    def do_update(self, line, **kwargs):
+    def do_update(self, line):
         """Updates an instance based on the class name and id by adding
         or updating attribute
         """
@@ -161,24 +160,17 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         elif (searchkey not in objdict.keys()):
             print("** no instance found **")
-        elif ((searchkey in objdict.keys()) and (len(args) == 2)
-              and (len(kwargs) == 0)):
+        elif ((searchkey in objdict.keys()) and (len(args) == 2)):
             print("** attribute name missing **")
-        elif ((searchkey in objdict.keys()) and (len(args) == 3)
-              and (len(kwargs) == 0)):
+        elif ((searchkey in objdict.keys()) and (len(args) == 3)):
             print("** value missing **")
-        elif ((searchkey in objdict.keys()) and (len(kwargs) != 0)):
-            obj_to_chg = objdict[searchkey]
-            for key, value in kwargs.items():
-                obj_to_chg.__dict__[key] = value
-                storage.save()
-        elif ((searchkey in objdict.keys()) and (len(args) >= 4)
-              and len(kwargs) == 0):
+        elif ((searchkey in objdict.keys()) and (len(args) >= 4)):
             obj_to_chg = objdict[searchkey]
             attr_name = args[2]
-            attr_val = args[3]
-            if attr_name in obj_to_chg.__dict__.keys():
-                attr_val = obj_to_chg.__dict__[attr_name].__class__(attr_val)
+            try:
+                attr_val = eval(args[3])
+            except Exception:
+                attr_val = args[3]
             obj_to_chg.__dict__[attr_name] = attr_val
             storage.save()
 
@@ -209,37 +201,30 @@ class HBNBCommand(cmd.Cmd):
             "all": self.do_all,
             "count": self.do_count}
         lexer = shlex.shlex(line)
+        lexer.whitespace += '(){},:'
+        lexer.wordchars += '.'
         args = list(lexer)
-        for sep in ['(', ')', '.']:
-            while sep in args:
-                args.remove(sep)
-
-        dictstr = ""
-        if ('{' in args):
-            split = args.index('{')
-            secondhlv = args[split:]
-            dictstr = ''.join(secondhlv)
-            try:
-                argdict = eval(dictstr)
-            except Exception:
-                dictstr = ""
-            args = args[:split - 1]
-        else:
-            while ',' in args:
-                args.remove(',')
-
-        if len(args) <= 1:
-            pass
-        else:
-            if args[1] == 'update' and (len(dictstr) != 0):
-                args.pop(1)
-                line_str = " ".join(args)
-                commands['update'](line_str, **argdict)
-            elif args[1] in commands.keys():
-                command = str(args[1])
-                args.pop(1)
+        cmdclass = args.pop(0).split('.')
+        args = cmdclass + args
+        command = args.pop(1)
+        if command == 'update':
+            if (len(args) <= 4):
                 line_str = " ".join(args)
                 commands[command](line_str)
+            else:
+                i = 2
+                j = 3
+                while (j < len(args)):
+                    name = args[i]
+                    val = args[j]
+                    line_str = "{} {} {} {}".format(args[0], args[1],
+                                                    args[i], args[j])
+                    i += 2
+                    j += 2
+                    commands[command](line_str)
+        elif command in commands.keys():
+            line_str = " ".join(args)
+            commands[command](line_str)
 
 
 if __name__ == '__main__':
