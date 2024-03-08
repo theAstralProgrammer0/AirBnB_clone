@@ -206,25 +206,30 @@ class HBNBCommand(cmd.Cmd):
         args = list(lexer)
         cmdclass = args.pop(0).split('.')
         args = cmdclass + args
-        command = args.pop(1)
-        if command == 'update':
-            if (len(args) <= 4):
+        if (len(args) == 1):
+            print("*** Unknown syntax: {}".format(args[0]))
+        elif (args[1] not in commands):
+            print("*** Unknown syntax: {}".format(args[1]))
+        else:
+            command = args.pop(1)
+            if command == 'update':
+                if (len(args) <= 4):
+                    line_str = " ".join(args)
+                    commands[command](line_str)
+                else:
+                    i = 2
+                    j = 3
+                    while (j < len(args)):
+                        name = args[i]
+                        val = args[j]
+                        line_str = "{} {} {} {}".format(args[0], args[1],
+                                                        args[i], args[j])
+                        i += 2
+                        j += 2
+                        commands[command](line_str)
+            elif command in commands.keys():
                 line_str = " ".join(args)
                 commands[command](line_str)
-            else:
-                i = 2
-                j = 3
-                while (j < len(args)):
-                    name = args[i]
-                    val = args[j]
-                    line_str = "{} {} {} {}".format(args[0], args[1],
-                                                    args[i], args[j])
-                    i += 2
-                    j += 2
-                    commands[command](line_str)
-        elif command in commands.keys():
-            line_str = " ".join(args)
-            commands[command](line_str)
 
 
 if __name__ == '__main__':
