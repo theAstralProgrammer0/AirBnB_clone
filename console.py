@@ -102,7 +102,6 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, line):
         """Deletes an instance based on the class name and id
         """
-
         args = shlex.split(line)
         objdict = storage.all()
         classes_set = {'BaseModel', 'User', 'State', 'City',
@@ -161,18 +160,35 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         elif (searchkey not in objdict.keys()):
             print("** no instance found **")
-        elif (searchkey in objdict.keys()) and (len(args) == 2):
+        elif ((searchkey in objdict.keys()) and (len(args) == 2)):
             print("** attribute name missing **")
-        elif (searchkey in objdict.keys()) and (len(args) == 3):
+        elif ((searchkey in objdict.keys()) and (len(args) == 3)):
             print("** value missing **")
-        elif (searchkey in objdict.keys()) and (len(args) >= 4):
+        elif ((searchkey in objdict.keys()) and (len(args) >= 4)):
             obj_to_chg = objdict[searchkey]
             attr_name = args[2]
-            attr_val = args[3]
-            if attr_name in obj_to_chg.__dict__.keys():
-                attr_val = obj_to_chg.__dict__[attr_name].__class__(attr_val)
+            try:
+                attr_val = eval(args[3])
+            except Exception:
+                attr_val = args[3]
             obj_to_chg.__dict__[attr_name] = attr_val
-            storage.save()
+            obj_to_chg.save()
+
+    def do_count(self, line):
+        """Counts numbder of instances of a class in the storage.
+        """
+        args = shlex.split(line)
+        objdict = storage.all()
+        classes_set = {'BaseModel', 'User', 'State', 'City',
+                       'Amenity', 'Place', 'Review'}
+        if (len(args) == 0) or (args[0] not in classes_set):
+            pass
+        elif (args[0] in classes_set):
+            count = 0
+            for key, value in objdict.items():
+                if (value.__class__.__name__ == args[0]):
+                    count += 1
+            print(count)
 
     def default(self, line):
         """Determines how the console acts in case an unkown command is passed
@@ -182,18 +198,33 @@ class HBNBCommand(cmd.Cmd):
             "create": self.do_create,
             "destroy": self.do_destroy,
             "update": self.do_update,
-            "all": self.do_all}
-        for sep in ['.', '(', ')', ',']:
-            line = line.replace(sep, ' ')
-        args = shlex.split(line)
-        if len(args) <= 1:
-            pass
-        else:
-            if args[1] in commands.keys():
-                command = str(args[1])
-                args.pop(1)
+            "all": self.do_all,
+            "count": self.do_count}
+        lexer = shlex.shlex(line)
+        lexer.whitespace += '(){},:'
+        lexer.wordchars += '.'
+        args = list(lexer)
+        cmdclass = args.pop(0).split('.')
+        args = cmdclass + args
+        command = args.pop(1)
+        if command == 'update':
+            if (len(args) <= 4):
                 line_str = " ".join(args)
                 commands[command](line_str)
+            else:
+                i = 2
+                j = 3
+                while (j < len(args)):
+                    name = args[i]
+                    val = args[j]
+                    line_str = "{} {} {} {}".format(args[0], args[1],
+                                                    args[i], args[j])
+                    i += 2
+                    j += 2
+                    commands[command](line_str)
+        elif command in commands.keys():
+            line_str = " ".join(args)
+            commands[command](line_str)
 
 
 if __name__ == '__main__':
