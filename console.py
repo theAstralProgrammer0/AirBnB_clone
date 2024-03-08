@@ -143,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
                     strlist.append(str(value))
             print(strlist)
 
-    def do_update(self, line):
+    def do_update(self, line, **kwargs):
         """Updates an instance based on the class name and id by adding
         or updating attribute
         """
@@ -161,11 +161,19 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         elif (searchkey not in objdict.keys()):
             print("** no instance found **")
-        elif (searchkey in objdict.keys()) and (len(args) == 2):
+        elif ((searchkey in objdict.keys()) and (len(args) == 2)
+              and (len(kwargs) == 0)):
             print("** attribute name missing **")
-        elif (searchkey in objdict.keys()) and (len(args) == 3):
+        elif ((searchkey in objdict.keys()) and (len(args) == 3)
+              and (len(kwargs) == 0)):
             print("** value missing **")
-        elif (searchkey in objdict.keys()) and (len(args) >= 4):
+        elif ((searchkey in objdict.keys()) and (len(kwargs) != 0)):
+            obj_to_chg = objdict[searchkey]
+            for key, value in kwargs.items():
+                obj_to_chg.__dict__[key] = value
+                storage.save()
+        elif ((searchkey in objdict.keys()) and (len(args) >= 4)
+              and len(kwargs) == 0):
             obj_to_chg = objdict[searchkey]
             attr_name = args[2]
             attr_val = args[3]
@@ -200,13 +208,34 @@ class HBNBCommand(cmd.Cmd):
             "update": self.do_update,
             "all": self.do_all,
             "count": self.do_count}
-        for sep in ['.', '(', ')', ',']:
-            line = line.replace(sep, ' ')
-        args = shlex.split(line)
+        lexer = shlex.shlex(line)
+        args = list(lexer)
+        for sep in ['(', ')', '.']:
+            while sep in args:
+                args.remove(sep)
+
+        dictstr = ""
+        if ('{' in args):
+            split = args.index('{')
+            secondhlv = args[split:]
+            dictstr = ''.join(secondhlv)
+            try:
+                argdict = eval(dictstr)
+            except Exception:
+                dictstr = ""
+            args = args[:split - 1]
+        else:
+            while ',' in args:
+                args.remove(',')
+
         if len(args) <= 1:
             pass
         else:
-            if args[1] in commands.keys():
+            if args[1] == 'update' and (len(dictstr) != 0):
+                args.pop(1)
+                line_str = " ".join(args)
+                commands['update'](line_str, **argdict)
+            elif args[1] in commands.keys():
                 command = str(args[1])
                 args.pop(1)
                 line_str = " ".join(args)
