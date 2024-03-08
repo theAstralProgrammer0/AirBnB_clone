@@ -143,6 +143,21 @@ class HBNBCommand(cmd.Cmd):
                     strlist.append(str(value))
             print(strlist)
 
+    def handle_update(args, searchkey, objdict):
+        obj_to_chg = objdict[searchkey]
+        dict_args = args[2:]
+        #print(dict_args)
+        if len(dict_args) % 2 != 0:
+            print("** value missing **")
+        else:
+            for i in range(0, len(dict_args) - 1, 2):
+                name = dict_args[i]
+                val = dict_args[i + 1]
+                if name in obj_to_chg.__dict__.keys():
+                    val = obj_to_chg.__dict__[name].__class__(val)
+                obj_to_chg.__dict__[name] = val
+                storage.save()
+
     def do_update(self, line):
         """Updates an instance based on the class name and id by adding
         or updating attribute
@@ -166,13 +181,7 @@ class HBNBCommand(cmd.Cmd):
         elif (searchkey in objdict.keys()) and (len(args) == 3):
             print("** value missing **")
         elif (searchkey in objdict.keys()) and (len(args) >= 4):
-            obj_to_chg = objdict[searchkey]
-            attr_name = args[2]
-            attr_val = args[3]
-            if attr_name in obj_to_chg.__dict__.keys():
-                attr_val = obj_to_chg.__dict__[attr_name].__class__(attr_val)
-            obj_to_chg.__dict__[attr_name] = attr_val
-            storage.save()
+            HBNBCommand.handle_update(args, searchkey, objdict)
 
     def do_count(self, line):
         """Counts all the instances of BaseModel that have been created"""
@@ -201,9 +210,10 @@ class HBNBCommand(cmd.Cmd):
             "update": self.do_update,
             "count": self.do_count,
             "all": self.do_all}
-        for sep in ['.', '(', ')', ',']:
+        for sep in ['.', '(', ')', ',', '{', '}', ':']:
             line = line.replace(sep, ' ')
         args = shlex.split(line)
+        #print(args)
         if len(args) <= 1:
             pass
         else:
