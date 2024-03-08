@@ -172,7 +172,7 @@ class HBNBCommand(cmd.Cmd):
             except Exception:
                 attr_val = args[3]
             obj_to_chg.__dict__[attr_name] = attr_val
-            storage.save()
+            obj_to_chg.save()
 
     def do_count(self, line):
         """Counts numbder of instances of a class in the storage.
