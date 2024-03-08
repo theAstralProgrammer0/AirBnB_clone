@@ -174,6 +174,22 @@ class HBNBCommand(cmd.Cmd):
             obj_to_chg.__dict__[attr_name] = attr_val
             storage.save()
 
+    def do_count(self, line):
+        """Counts numbder of instances of a class in the storage.
+        """
+        args = shlex.split(line)
+        objdict = storage.all()
+        classes_set = {'BaseModel', 'User', 'State', 'City',
+                       'Amenity', 'Place', 'Review'}
+        if (len(args) == 0) or (args[0] not in classes_set):
+            pass
+        elif (args[0] in classes_set):
+            count = 0
+            for key, value in objdict.items():
+                if (value.__class__.__name__ == args[0]):
+                    count += 1
+            print(count)
+
     def default(self, line):
         """Determines how the console acts in case an unkown command is passed
         """
@@ -182,7 +198,8 @@ class HBNBCommand(cmd.Cmd):
             "create": self.do_create,
             "destroy": self.do_destroy,
             "update": self.do_update,
-            "all": self.do_all}
+            "all": self.do_all,
+            "count": self.do_count}
         for sep in ['.', '(', ')', ',']:
             line = line.replace(sep, ' ')
         args = shlex.split(line)
