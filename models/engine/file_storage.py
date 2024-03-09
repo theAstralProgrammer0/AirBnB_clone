@@ -31,7 +31,7 @@ class FileStorage:
         """ This method serializes the __objects dictionary
         to the JSON file.
         """
-        with open(FileStorage.__file_path, "w") as f:
+        with open(FileStorage.__file_path, "w", encoding='utf-8') as f:
             newdict = {}
             for key, value in FileStorage.__objects.items():
                 newdict[key] = value.to_dict()
@@ -52,7 +52,7 @@ class FileStorage:
 
         if (os.path.exists(FileStorage.__file_path) and
                 os.path.isfile(FileStorage.__file_path)):
-            with open(FileStorage.__file_path, "r") as f:
+            with open(FileStorage.__file_path, "r", encoding='utf-8') as f:
                 loaded = json.loads(f.read())
                 for key, value in loaded.items():
                     if value['__class__'] == "BaseModel":
