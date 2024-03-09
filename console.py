@@ -43,10 +43,10 @@ class HBNBCommand(cmd.Cmd):
         """Creates a new instance of BaseModel, saves it (to the JSON file)
         and prints the id
         """
-        if line == "":
-            print("** class name missing **")
         args = shlex.split(line)
-        if args[0] == "BaseModel":
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] == "BaseModel":
             a = BaseModel()
             print(a.id)
         elif args[0] == "User":
