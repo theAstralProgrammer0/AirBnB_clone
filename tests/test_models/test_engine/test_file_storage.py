@@ -25,3 +25,17 @@ class file_storage_all_test(unittest.TestCase):
 
     def test_strarg(self):
         sto = FileStorage()
+        with self.assertRaises(TypeError):
+            obj_dict = sto.all("Hello")
+
+    def test_floatarg(self):
+        sto = FileStorage()
+        with self.assertRaises(TypeError):
+            obj_dict = sto.all(4.4)
+
+    def test_floatarg(self):
+        sto = FileStorage()
+        with self.assertRaises(TypeError):
+            obj_dict = sto.all(4.4)
+
+    
