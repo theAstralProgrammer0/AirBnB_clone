@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """This module contains all unittests for the ``file_storage`` class
 """
 import unittest
