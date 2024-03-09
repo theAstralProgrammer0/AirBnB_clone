@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 This program contains the entry point of the command interpreter which serves
 as the front-end for testing and prototyping the backend
