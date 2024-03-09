@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" This module defines the class ``BaseModel``
+"""This module defines the class ``BaseModel``
 """
 import uuid
 import datetime
@@ -7,11 +7,11 @@ from models import storage
 
 
 class BaseModel:
-    """ This class defines all common attributes/methods
+    """This class defines all common attributes/methods
     for other classes in the AirBnB_clone project
     """
     def __init__(self, *args, **kwargs):
-        """ This method initializes a BaseModel object/instance.
+        """This method initializes a BaseModel object/instance.
         Assigns id attribute with uuid4(), created_at with the
         datetime object when the instance is created, and
         updated_at with the datetime object when the instance is updated.
@@ -38,21 +38,21 @@ class BaseModel:
                     self.__dict__[key] = value
 
     def __str__(self):
-        """ This method prints the string representation of a BaseModel
+        """This method prints the string representation of a BaseModel
         object/instance.
         """
         return ("[{}] ({}) {}".format(self.__class__.__name__, self.id,
                                       self.__dict__))
 
     def save(self):
-        """ This method updates the updated_at attribute with the current
+        """This method updates the updated_at attribute with the current
         datetime object & saves the objects/instances into a JSON file.
         """
         self.updated_at = datetime.datetime.now()
         storage.save()
 
     def to_dict(self):
-        """ This method returns a dictionary containing all keys/values
+        """This method returns a dictionary containing all keys/values
         of __dict__ of the instance
         """
         instance_dict = dict(self.__dict__)
