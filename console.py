@@ -145,6 +145,7 @@ class HBNBCommand(cmd.Cmd):
         objdict = storage.all()
         classes_set = {'BaseModel', 'User', 'State', 'City',
                        'Amenity', 'Place', 'Review'}
+        skip_attr = {'id', 'created_at', 'updated_at'}
         if len(args) == 0:
             print("** class name missing **")
         elif args[0] not in classes_set:
@@ -157,7 +158,10 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
         elif ((searchkey in objdict.keys()) and (len(args) == 3)):
             print("** value missing **")
-        elif ((searchkey in objdict.keys()) and (len(args) >= 4)):
+        elif args[2] in skip_attr:
+            pass
+        elif ((searchkey in objdict.keys()) and (len(args) >= 4)
+              and args[2] not in skip_attr):
             obj_to_chg = objdict[searchkey]
             attr_name = args[2]
             try:
