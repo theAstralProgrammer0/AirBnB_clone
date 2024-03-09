@@ -423,7 +423,6 @@ class FileStorage_reload_test(unittest.TestCase):
         objdict = FileStorage().all()
         objdict.clear()
         a = dict(name="abdu", age=28, __class__="BaseModel")
-        print(a)
         try:
             with open('file.json', 'w', encoding='utf-8') as f:
                 json.dump(a, f)
