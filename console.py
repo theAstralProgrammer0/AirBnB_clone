@@ -48,31 +48,24 @@ class HBNBCommand(cmd.Cmd):
         args = shlex.split(line)
         if args[0] == "BaseModel":
             a = BaseModel()
-            a.save()
             print(a.id)
         elif args[0] == "User":
             a = User()
-            a.save()
             print(a.id)
         elif args[0] == "Place":
             a = Place()
-            a.save()
             print(a.id)
         elif args[0] == "State":
             a = State()
-            a.save()
             print(a.id)
         elif args[0] == "City":
             a = City()
-            a.save()
             print(a.id)
         elif args[0] == "Amenity":
             a = Amenity()
-            a.save()
             print(a.id)
         elif args[0] == "Review":
             a = Review()
-            a.save()
             print(a.id)
         else:
             print("** class doesn't exist **")
