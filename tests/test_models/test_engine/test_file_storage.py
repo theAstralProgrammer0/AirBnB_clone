@@ -37,5 +37,3 @@ class file_storage_all_test(unittest.TestCase):
         sto = FileStorage()
         with self.assertRaises(TypeError):
             obj_dict = sto.all(4.4)
-
-    
