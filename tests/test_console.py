@@ -773,6 +773,15 @@ class Console_count_test(unittest.TestCase):
 class Console_default_test(unittest.TestCase):
     """This class tests the default method of the console.
     """
+    def setUp(self):
+        """clears the objects dictionary"""
+        try:
+            os.remove('file.json')
+        except Exception:
+            pass
+        storage.all().clear()
+        storage.save()
+
     def test_unkowncommand(self):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("ROBOCOMMAND")
@@ -818,5 +827,527 @@ class Console_default_test(unittest.TestCase):
             HBNBCommand().onecmd("ROBOT.create()")
         self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
 
+    def test_dot_no_id_show(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.show()")
+        self.assertEqual(f.getvalue(), "** instance id missing **\n")
+
+    def test_unknown_dot_show(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("ROBOT.show()")
+        self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
+
+    def test_dot_show(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(".show()")
+        self.assertEqual(f.getvalue(), "** class name missing **\n")
+
     def test_BaseModel_dot_show(self):
-        pass
+        a = BaseModel()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.show(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), str(a)+'\n')
+
+    def test_no_instance_found_dot_show(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.show(\"7238437284723847\")")
+        self.assertEqual(f.getvalue(), "** no instance found **\n")
+
+    def test_User_dot_show(self):
+        a = User()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.show(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), str(a)+'\n')
+
+    def test_Place_dot_show(self):
+        a = Place()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Place.show(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), str(a)+'\n')
+
+    def test_State_dot_show(self):
+        a = State()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("State.show(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), str(a)+'\n')
+
+    def test_City_dot_show(self):
+        a = City()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("City.show(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), str(a)+'\n')
+
+    def test_Amenity_dot_show(self):
+        a = Amenity()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Amenity.show(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), str(a)+'\n')
+
+    def test_Review_dot_show(self):
+        a = Review()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Review.show(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), str(a)+'\n')
+
+    def test_None_arg(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Review.show(None)")
+        self.assertEqual(f.getvalue(), "** no instance found **\n")
+
+    def test_dot_no_id_destroy(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.destroy()")
+        self.assertEqual(f.getvalue(), "** instance id missing **\n")
+
+    def test_dot_no_class_destroy(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(".destroy(\"3424234234\")")
+        self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
+
+    def test_dot_unknown_class_destroy(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Hello.destroy(\"3424234234\")")
+        self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
+
+    def test_BaseModel_dot_destroy(self):
+        a = BaseModel()
+        storage.new(a)
+        self.assertTrue(a in storage.all().values())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.destroy(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), "")
+        self.assertTrue(a not in storage.all().values())
+
+    def test_User_dot_destroy(self):
+        a = User()
+        storage.new(a)
+        self.assertTrue(a in storage.all().values())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.destroy(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), "")
+        self.assertTrue(a not in storage.all().values())
+
+    def test_Place_dot_destroy(self):
+        a = Place()
+        storage.new(a)
+        self.assertTrue(a in storage.all().values())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Place.destroy(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), "")
+        self.assertTrue(a not in storage.all().values())
+
+    def test_State_dot_destroy(self):
+        a = State()
+        storage.new(a)
+        self.assertTrue(a in storage.all().values())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("State.destroy(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), "")
+        self.assertTrue(a not in storage.all().values())
+
+    def test_City_dot_destroy(self):
+        a = City()
+        storage.new(a)
+        self.assertTrue(a in storage.all().values())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("City.destroy(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), "")
+        self.assertTrue(a not in storage.all().values())
+
+    def test_Amenity_dot_destroy(self):
+        a = Amenity()
+        storage.new(a)
+        self.assertTrue(a in storage.all().values())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Amenity.destroy(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), "")
+        self.assertTrue(a not in storage.all().values())
+
+    def test_Review_dot_destroy(self):
+        a = Review()
+        storage.new(a)
+        self.assertTrue(a in storage.all().values())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Review.destroy(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), "")
+        self.assertTrue(a not in storage.all().values())
+
+    def test_dot_destroy_4args(self):
+        a = Review()
+        storage.new(a)
+        self.assertTrue(a in storage.all().values())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Review.destroy(\"{}\", Hello!)".format(a.id))
+        self.assertEqual(f.getvalue(), "")
+        self.assertTrue(a not in storage.all().values())
+
+    def test_dot_all_no_class(self):
+        storage.new(BaseModel())
+        storage.new(User())
+        storage.new(Place())
+        storage.new(State())
+        storage.new(City())
+        storage.new(Review())
+        storage.new(Amenity())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(".all()")
+        string = f.getvalue()
+        self.assertTrue("BaseModel" in string)
+        self.assertTrue("User" in string)
+        self.assertTrue("Place" in string)
+        self.assertTrue("State" in string)
+        self.assertTrue("City" in string)
+        self.assertTrue("Review" in string)
+        self.assertTrue("Amenity" in string)
+
+    def test_dot_all_BaseModel_arg(self):
+        storage.new(BaseModel())
+        storage.new(User())
+        storage.new(Place())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.all()")
+        string = f.getvalue()
+        self.assertTrue("BaseModel" in string)
+        self.assertTrue("User" not in string)
+        self.assertTrue("Place" not in string)
+
+    def test_dot_all_User_arg(self):
+        storage.new(BaseModel())
+        storage.new(User())
+        storage.new(Place())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.all()")
+        string = f.getvalue()
+        self.assertTrue("BaseModel" not in string)
+        self.assertTrue("User" in string)
+        self.assertTrue("Place" not in string)
+
+    def test_dot_all_Place_arg(self):
+        storage.new(BaseModel())
+        storage.new(User())
+        storage.new(Place())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Place.all()")
+        string = f.getvalue()
+        self.assertTrue("BaseModel" not in string)
+        self.assertTrue("User" not in string)
+        self.assertTrue("Place" in string)
+
+    def test_dot_all_State_arg(self):
+        storage.new(BaseModel())
+        storage.new(State())
+        storage.new(Place())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("State.all()")
+        string = f.getvalue()
+        self.assertTrue("BaseModel" not in string)
+        self.assertTrue("State" in string)
+        self.assertTrue("Place" not in string)
+
+    def test_dot_all_City_arg(self):
+        storage.new(BaseModel())
+        storage.new(City())
+        storage.new(Place())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("City.all()")
+        string = f.getvalue()
+        self.assertTrue("BaseModel" not in string)
+        self.assertTrue("City" in string)
+        self.assertTrue("Place" not in string)
+
+    def test_dot_all_Review_arg(self):
+        storage.new(BaseModel())
+        storage.new(Review())
+        storage.new(Place())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Review.all()")
+        string = f.getvalue()
+        self.assertTrue("BaseModel" not in string)
+        self.assertTrue("Review" in string)
+        self.assertTrue("Place" not in string)
+
+    def test_dot_all_Amenity_arg(self):
+        storage.new(BaseModel())
+        storage.new(Amenity())
+        storage.new(Place())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Amenity.all()")
+        string = f.getvalue()
+        self.assertTrue("BaseModel" not in string)
+        self.assertTrue("Amenity" in string)
+        self.assertTrue("Place" not in string)
+
+    def test_dot_all_unkown_class(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Robots.all()")
+        self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
+
+    def test_dot_update_no_args(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(".update()")
+        self.assertEqual(f.getvalue(), "** class name missing **\n")
+
+    def test_dot_update_invalid_class(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("ROBOTCLASS.update()")
+        self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
+
+    def test_dot_update_valid_class_only(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.update()")
+        self.assertEqual(f.getvalue(), "** instance id missing **\n")
+
+    def test_dot_update_valid_class_invalid_id(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.update(\"VERYVALIDID9324-3243\")")
+        self.assertEqual(f.getvalue(), "** no instance found **\n")
+
+    def test_dot_update_valid_obj_no_key_arg(self):
+        a = BaseModel()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.update(\"{}\")".format(a.id))
+        self.assertEqual(f.getvalue(), "** attribute name missing **\n")
+
+    def test_dot_update_valid_obj_no_value_arg(self):
+        a = BaseModel()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.update(\"{}\", name".format(a.id))
+        self.assertEqual(f.getvalue(), "** value missing **\n")
+
+    def test_update_BaseModel_arg(self):
+        a = BaseModel()
+        time1 = a.updated_at
+        a.name = "Betty"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(
+                ("BaseModel.update(\"{}\", " +
+                 "\"name\", \"Holberton\"").format(a.id))
+        time2 = a.updated_at
+        self.assertEqual(a.name, "Holberton")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_User_arg(self):
+        a = User()
+        time1 = a.updated_at
+        a.name = "Betty"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(
+                "User.update(\"{}\", \"name\", \"Holberton\"".format(a.id))
+        time2 = a.updated_at
+        self.assertEqual(a.name, "Holberton")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_State_arg(self):
+        a = State()
+        time1 = a.updated_at
+        a.name = "Betty"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(
+                "State.update(\"{}\", \"name\", \"Holberton\"".format(a.id))
+        time2 = a.updated_at
+        self.assertEqual(a.name, "Holberton")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_City_arg(self):
+        a = City()
+        time1 = a.updated_at
+        a.name = "Betty"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(
+                "City.update(\"{}\", \"name\", \"Holberton\"".format(a.id))
+        time2 = a.updated_at
+        self.assertEqual(a.name, "Holberton")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_Amenity_arg(self):
+        a = Amenity()
+        time1 = a.updated_at
+        a.name = "Betty"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(
+                "Amenity.update(\"{}\", \"name\", \"Holberton\"".format(a.id))
+        time2 = a.updated_at
+        self.assertEqual(a.name, "Holberton")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_Place_arg(self):
+        a = Place()
+        time1 = a.updated_at
+        a.name = "Betty"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(
+                "Place.update(\"{}\", \"name\", \"Holberton\"".format(a.id))
+        time2 = a.updated_at
+        self.assertEqual(a.name, "Holberton")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_Review_arg(self):
+        a = Review()
+        time1 = a.updated_at
+        a.name = "Betty"
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(
+                "Review.update(\"{}\", \"name\", \"Holberton\"".format(a.id))
+        time2 = a.updated_at
+        self.assertEqual(a.name, "Holberton")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_quotedkey_arg(self):
+        a = BaseModel()
+        cmd = ("BaseModel.update(\"{}\", " +
+               "\"my email\", \"a@mail.com\")").format(a.id)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(cmd)
+        self.assertTrue("my email" in a.__dict__)
+
+    def test_update_quotedval_arg(self):
+        a = BaseModel()
+        cmd = "BaseModel.update(\"{}\", \"name\", \"abdu hany\")".format(a.id)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(cmd)
+        self.assertTrue("abdu hany" in a.__dict__.values())
+
+    def test_update_morethan5_args(self):
+        a = BaseModel()
+        with patch('sys.stdout', new=StringIO()) as f:
+            cmd = ('BaseModel.update(\"{}\", \"name\", ' +
+                   '\"abdu\", \"hello\", \"bye\")').format(a.id)
+            HBNBCommand().onecmd(cmd)
+        self.assertTrue("hello" in a.__dict__)
+
+    def test_update_int_val(self):
+        a = BaseModel()
+        with patch('sys.stdout', new=StringIO()) as f:
+            cmd = "BaseModel.update(\"{}\", \"age\", 29)".format(a.id)
+            HBNBCommand().onecmd(cmd)
+        self.assertIsInstance(a.age, int)
+
+    def test_update_float_val(self):
+        a = BaseModel()
+        with patch('sys.stdout', new=StringIO()) as f:
+            cmd = "BaseModel.update(\"{}\", \"age\", 29.4342)".format(a.id)
+            HBNBCommand().onecmd(cmd)
+        self.assertIsInstance(a.age, float)
+
+    def test_update_written_to_json(self):
+        a = BaseModel()
+        with patch('sys.stdout', new=StringIO()) as f:
+            cmd = "BaseModel.update(\"{}\", \"age\", 29.4342)".format(a.id)
+            HBNBCommand().onecmd(cmd)
+        try:
+            with open('file.json', 'r', encoding='utf-8') as f:
+                jsonstr = f.read()
+                assertTrue("age" in jsonstr)
+        except Exception:
+            pass
+
+    def test_update_fromdict_BaseModel(self):
+        a = BaseModel()
+        time1 = a.updated_at
+        a.name = "betty"
+        cmd = ("BaseModel.update(\"{}\", "
+               "{})").format(a.id, str(dict(name="abdu")))
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(cmd)
+        time2 = a.updated_at
+        self.assertEqual(a.name, "abdu")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_fromdict_User(self):
+        a = User()
+        time1 = a.updated_at
+        a.name = "betty"
+        cmd = "User.update(\"{}\", {})".format(a.id, str(dict(name="abdu")))
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(cmd)
+        time2 = a.updated_at
+        self.assertEqual(a.name, "abdu")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_fromdict_State(self):
+        a = State()
+        time1 = a.updated_at
+        a.name = "betty"
+        cmd = ("State.update(\"{}\", "
+               "{})").format(a.id, str(dict(name="abdu")))
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(cmd)
+        time2 = a.updated_at
+        self.assertEqual(a.name, "abdu")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_fromdict_City(self):
+        a = City()
+        time1 = a.updated_at
+        a.name = "betty"
+        cmd = ("City.update(\"{}\", "
+               "{})").format(a.id, str(dict(name="abdu")))
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(cmd)
+        time2 = a.updated_at
+        self.assertEqual(a.name, "abdu")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_fromdict_Amenity(self):
+        a = Amenity()
+        time1 = a.updated_at
+        a.name = "betty"
+        cmd = ("Amenity.update(\"{}\", "
+               "{})").format(a.id, str(dict(name="abdu")))
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(cmd)
+        time2 = a.updated_at
+        self.assertEqual(a.name, "abdu")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_fromdict_Place(self):
+        a = Place()
+        time1 = a.updated_at
+        a.name = "betty"
+        cmd = ("Place.update(\"{}\", "
+               "{})").format(a.id, str(dict(name="abdu")))
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(cmd)
+        time2 = a.updated_at
+        self.assertEqual(a.name, "abdu")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_fromdict_Review(self):
+        a = Review()
+        time1 = a.updated_at
+        a.name = "betty"
+        cmd = ("Review.update(\"{}\", "
+               "{})").format(a.id, str(dict(name="abdu")))
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(cmd)
+        time2 = a.updated_at
+        self.assertEqual(a.name, "abdu")
+        self.assertNotEqual(time1, time2)
+
+    def test_update_from_long_dict(self):
+        a = User()
+        time1 = a.updated_at
+        a.name = "Betty"
+        changedict = str(dict(name="Holberton", age=28, height=1.75))
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.update(\"{}\", {})".format(a.id,
+                                                                  changedict))
+        time2 = a.updated_at
+        self.assertEqual(a.name, "Holberton")
+        self.assertIsInstance(a.name, str)
+        self.assertEqual(a.age, 28)
+        self.assertIsInstance(a.age, int)
+        self.assertEqual(a.height, 1.75)
+        self.assertIsInstance(a.height, float)
+        self.assertNotEqual(time1, time2)
+
+
+if __name__ == "__main__":
+    unittest.main()
