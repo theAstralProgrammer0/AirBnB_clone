@@ -11,17 +11,9 @@ from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 
 
-class TestBaseModel_instantiation(unittest.TestCase):
-    """Defines all unittests for testing instantiation of BaseModel class"""
-
-    def test_instantiation(self):
-        """This method tests the normal instantiation of BaseModel"""
-
-        a = BaseModel()
-        self.assertEqual(str(type(a)), "<class 'models.base_model.BaseModel'>")
-        self.assertIsInstance(a, BaseModel)
-        self.assertTrue(issubclass(type(a), BaseModel))
-
+class TestBaseModel_attributes(unittest.TestCase):
+    """This class tests the attributes of a BaseModel object
+    """
     def test_unique_ids(self):
         a = BaseModel()
         b = BaseModel()
@@ -36,6 +28,18 @@ class TestBaseModel_instantiation(unittest.TestCase):
         a = BaseModel()
         b = BaseModel()
         self.assertNotEqual(a.updated_at, b.updated_at)
+
+
+class TestBaseModel_instantiation(unittest.TestCase):
+    """Defines all unittests for testing instantiation of BaseModel class"""
+
+    def test_instantiation(self):
+        """This method tests the normal instantiation of BaseModel"""
+
+        a = BaseModel()
+        self.assertEqual(str(type(a)), "<class 'models.base_model.BaseModel'>")
+        self.assertIsInstance(a, BaseModel)
+        self.assertTrue(issubclass(type(a), BaseModel))
 
     def test_instantiation_no_args(self):
         """This method tests the instantiation of BaseModel with no args"""
