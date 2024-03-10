@@ -42,6 +42,10 @@ class FileStorage_instantiation_test(unittest.TestCase):
         with self.assertRaises(TypeError):
             sto = FileStorage(2, 3)
 
+    def test_init_None_arg(self):
+        with self.assertRaises(TypeError):
+            sto = FileStorage(None)
+
 
 class FileStorage_all_test(unittest.TestCase):
     """This class tests the all method of the FileStorage class.
@@ -322,6 +326,10 @@ class FileStorage_save_test(unittest.TestCase):
         objdict = FileStorage().all()
         with self.assertRaises(TypeError):
             FileStorage().save(1)
+
+    def test_save_none(self):
+        with self.assertRaises(TypeError):
+            FileStorage().save(None)
 
 
 class FileStorage_reload_test(unittest.TestCase):
