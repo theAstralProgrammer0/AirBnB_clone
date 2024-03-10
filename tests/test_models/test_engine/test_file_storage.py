@@ -4,6 +4,7 @@
 import unittest
 import os
 import json
+from models import storage
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.user import User
@@ -25,6 +26,12 @@ class FileStorage_attributes_test(unittest.TestCase):
     def test_objects_attr(self):
         with self.assertRaises(AttributeError):
             print(FileStorage.__objects)
+
+    def test_file_path_type(self):
+        self.assertEqual(type(storage._FileStorage__file_path), str)
+
+    def test_objects_type(self):
+        self.assertEqual(type(storage._FileStorage__objects), dict)
 
 
 class FileStorage_instantiation_test(unittest.TestCase):

@@ -29,6 +29,18 @@ class TestBaseModel_attributes(unittest.TestCase):
         b = BaseModel()
         self.assertNotEqual(a.updated_at, b.updated_at)
 
+    def test_id_attr(self):
+        a = BaseModel()
+        self.assertEqual(type(a.id), str)
+
+    def test_created_at_attr(self):
+        a = BaseModel()
+        self.assertEqual(type(a.created_at), datetime.datetime)
+
+    def test_updated_at_attr(self):
+        a = BaseModel()
+        self.assertEqual(type(a.updated_at), datetime.datetime)
+
 
 class TestBaseModel_instantiation(unittest.TestCase):
     """Defines all unittests for testing instantiation of BaseModel class"""
