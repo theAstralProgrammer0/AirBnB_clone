@@ -1348,6 +1348,80 @@ class Console_default_test(unittest.TestCase):
         self.assertIsInstance(a.height, float)
         self.assertNotEqual(time1, time2)
 
+    def test_count_noargs(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(".count()")
+        self.assertEqual(f.getvalue(), "")
+
+    def test_count_invalid_class(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("ROBOTCLASS.count()")
+        self.assertEqual(f.getvalue(), "")
+
+    def test_BaseModel_class(self):
+        storage.new(BaseModel())
+        storage.new(BaseModel())
+        storage.new(User())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.count()")
+        self.assertEqual(f.getvalue(), "2\n")
+
+    def test_User_class(self):
+        storage.new(BaseModel())
+        storage.new(BaseModel())
+        storage.new(User())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.count()")
+        self.assertEqual(f.getvalue(), "1\n")
+
+    def test_State_class(self):
+        storage.new(BaseModel())
+        storage.new(BaseModel())
+        storage.new(State())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("State.count()")
+        self.assertEqual(f.getvalue(), "1\n")
+
+    def test_City_class(self):
+        storage.new(BaseModel())
+        storage.new(BaseModel())
+        storage.new(City())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("City.count()")
+        self.assertEqual(f.getvalue(), "1\n")
+
+    def test_Amenity_class(self):
+        storage.new(BaseModel())
+        storage.new(Amenity())
+        storage.new(Amenity())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Amenity.count()")
+        self.assertEqual(f.getvalue(), "2\n")
+
+    def test_Place_class(self):
+        storage.new(Place())
+        storage.new(Review())
+        storage.new(User())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Place.count()")
+        self.assertEqual(f.getvalue(), "1\n")
+
+    def test_Review_class(self):
+        storage.new(Review())
+        storage.new(Review())
+        storage.new(Review())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Review.count()")
+        self.assertEqual(f.getvalue(), "3\n")
+
+    def test_nonexistent_valid_class(self):
+        storage.new(BaseModel())
+        storage.new(BaseModel())
+        storage.new(User())
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Place.count()")
+        self.assertEqual(f.getvalue(), "0\n")
+
 
 if __name__ == "__main__":
     unittest.main()
