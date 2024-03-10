@@ -819,4 +819,4 @@ class Console_default_test(unittest.TestCase):
         self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
 
     def test_BaseModel_dot_show(self):
-        
+        pass
