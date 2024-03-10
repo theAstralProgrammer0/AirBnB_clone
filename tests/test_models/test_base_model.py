@@ -22,6 +22,21 @@ class TestBaseModel_instantiation(unittest.TestCase):
         self.assertIsInstance(a, BaseModel)
         self.assertTrue(issubclass(type(a), BaseModel))
 
+    def test_unique_ids(self):
+        a = BaseModel()
+        b = BaseModel()
+        self.assertNotEqual(a.id, b.id)
+
+    def test_unique_created_at(self):
+        a = BaseModel()
+        b = BaseModel()
+        self.assertNotEqual(a.created_at, b.created_at)
+
+    def test_unique_updated_at(self):
+        a = BaseModel()
+        b = BaseModel()
+        self.assertNotEqual(a.updated_at, b.updated_at)
+
     def test_instantiation_no_args(self):
         """This method tests the instantiation of BaseModel with no args"""
 
