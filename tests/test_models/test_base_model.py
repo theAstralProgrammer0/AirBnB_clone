@@ -31,15 +31,15 @@ class TestBaseModel_attributes(unittest.TestCase):
 
     def test_id_attr(self):
         a = BaseModel()
-        self.assertEqual(type(a.id), str)
+        self.assertIsInstance(a.id, str)
 
     def test_created_at_attr(self):
         a = BaseModel()
-        self.assertEqual(type(a.created_at), datetime.datetime)
+        self.assertIsInstance(a.created_at, datetime.datetime)
 
     def test_updated_at_attr(self):
         a = BaseModel()
-        self.assertEqual(type(a.updated_at), datetime.datetime)
+        self.assertIsInstance(a.updated_at, datetime.datetime)
 
 
 class TestBaseModel_instantiation(unittest.TestCase):
