@@ -373,6 +373,13 @@ class TestBaseModel_save(unittest.TestCase):
         with open(FileStorage._FileStorage__file_path, 'r') as f:
             self.assertEqual(f.read(50), "{{\"{}\":".format(key))
 
+    def test_save_updated_at_change(self):
+        a = BaseModel()
+        time1 = a.updated_at
+        a.save()
+        time2 = a.updated_at
+        self.assertNotEqual(time1, time2)
+
 
 class TestBaseModel_to_dict(unittest.TestCase):
     """This class tests the to_dict method of a Place
