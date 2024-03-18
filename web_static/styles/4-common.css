@@ -5,3 +5,12 @@ body {
 	font-size: 14px;
 	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+
+.container {
+	display: flex;
+	justify-content: center;
+	max-width: 1000px;
+	margin: auto;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
