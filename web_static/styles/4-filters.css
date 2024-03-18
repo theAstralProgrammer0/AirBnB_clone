@@ -9,7 +9,7 @@ section.filters {
 	border-radius: 4px;
 }
 
-.filters button {
+section.filters button {
 	margin-right: 30px;
 	height: 48px;
 	width: 20%;
@@ -20,6 +20,6 @@ section.filters {
 	border-radius: 4px;
 }
 
-.filters button:hover {
+section.filters button:hover {
 	opacity: 90%;
 }
