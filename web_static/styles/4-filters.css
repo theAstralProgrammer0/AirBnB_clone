@@ -1,7 +1,4 @@
 section.filters {
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
 	background-color: white;
 	height: 70px;
 	width: 100%;
@@ -10,7 +7,9 @@ section.filters {
 }
 
 section.filters button {
+	float: right;
 	margin-right: 30px;
+	margin-top: 11px;
 	height: 48px;
 	width: 20%;
 	font-size: 18px;
