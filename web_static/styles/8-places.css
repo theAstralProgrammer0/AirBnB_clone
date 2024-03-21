@@ -67,13 +67,24 @@ section.places div.information {
 section.places article div.information div.max_guest,
 section.places article div.information div.number_rooms,
 section.places article div.information div.number_bathrooms {
-	background-image: url('../images/max_guest.png');
-	background-repeat: no-repeat;
-	background-position: 50% 10px;
-	line-height: 140px;
-	width: 100px;
-	height: 100%;
-	text-align: center;
+        background-repeat: no-repeat;
+        background-position: 50% 10px;
+        line-height: 140px;
+        width: 100px;
+        height: 100%;
+        text-align: center;
+}
+
+.max_guest {
+        background-image: url('../images/max_guest.png');
+}
+
+.number_rooms {
+        background-image: url('../images/bed.png');
+}
+
+.number_bathrooms {
+        background-image: url('../images/bath.png');
 }
 
 section.places article div.user,
