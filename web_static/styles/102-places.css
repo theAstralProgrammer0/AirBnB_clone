@@ -1,0 +1,225 @@
+/* places section */
+section.places {
+	margin: 0 auto;
+	padding: 0;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	width: calc(100vw - 20px);
+	max-width: 100%;
+}
+
+/* Places typography */
+section.places h1 {
+	width: 100%;
+	position: relative;
+	top: 0;
+	left: 0;
+	font-size: 30px;
+	margin-left: 20px;
+	margin-bottom: 0;
+}
+
+/* Places article section */
+section.places article {
+	width: 390px;
+	padding: 20px;
+	margin: 20px;
+	border: 1px solid #FF5A5F;
+	border-radius: 4px;
+	display: inline-block;
+	height: contain;
+}
+
+/* Places article typography */
+section.places article h2 {
+	text-align: center;
+	font-size: 30px;
+	margin-top: 10px;
+
+}
+
+/* article children styles media query */
+@media screen and (max-width: 400px) {
+	section.places article div.price_by_night {
+		/* Apply some styles */
+		position: relative;
+		top: -70px;
+		float: right;
+		color: #FF5A5F;
+		border: 4px solid #FF5A5F;
+		border-radius: 50%;
+		min-width: 20px;
+		line-height: 20px;
+		height: 20px;
+		font-size: 5px;
+		text-align: center;
+		padding: 5px;
+	}
+}
+
+/* Article children styles */
+section.places article div.price_by_night {
+	position: relative;
+	top: -70px;
+	float: right;
+	color: #FF5A5F;
+	border: 4px solid #FF5A5F;
+	border-radius: 50%;
+	min-width: 60px;
+	line-height: 60px;
+	height: 60px;
+	font-size: 30px;
+	text-align: center;
+	padding: 5px;
+}
+
+section.places div.information {
+	height: 80px;
+	border-top: 1px solid #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
+	display: flex;
+	justify-content: space-around;
+	padding-bottom: 10px;
+	width: 100%;
+	position: relative;
+	top: -50px;
+}
+
+.max_guest {
+	background-image: url('../images/max_guest.png');
+}
+
+.number_rooms {
+	background-image: url('../images/bed.png');
+}
+
+.number_bathrooms {
+	background-image: url('../images/bath.png');
+}
+
+
+section.places article div.information div.max_guest,
+section.places article div.information div.number_rooms,
+section.places article div.information div.number_bathrooms {
+	background-repeat: no-repeat;
+	background-position: 50% 10px;
+	line-height: 140px;
+	width: 100px;
+	height: 100%;
+	text-align: center;
+}
+
+
+/* User and description */
+section.places article div.user,
+section.places article div.description {
+	position: relative;
+	top: -50px;
+}
+
+section.places article div.user {
+	padding-top: 10px;
+}
+
+
+/* wrapper app */
+section.places article div.wrapper-app {
+	position: relative;
+	top: -50px;
+	margin-bottom: -50px;
+}
+
+/* article unordered lists */
+section.places article div ul {
+	list-style: none;
+	padding: 0;
+}
+
+
+/* article amenities */
+section.places article div.amenities {
+	margin-top: 40px;
+}
+
+section.places article div.amenities h2 {
+	font-size: 16px;
+	border-bottom: 1px solid #DDDDDD;
+	text-align: left;
+	padding: 0 0 10px 0;
+	margin: 0;
+}
+
+/* amenities list */
+section.places article div ul li {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding-bottom: 10px;
+}
+
+
+/* tv, wifi, and pets */
+.tv {
+	background-image: url('../images/tv.png');
+}
+
+.wifi {
+	background-image: url('../images/wifi.png');
+}
+
+.pets {
+	background-image: url('../images/pets.png');
+}
+
+section.places article div.wrapper-app div.amenities div.tv,
+section.places article div.wrapper-app div.amenities div.wifi,
+section.places article div.wrapper-app div.amenities div.pets {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	background-repeat: no-repeat;
+	background-size: 30px;
+}
+
+section.places article div.wrapper-app div.amenities span {
+	padding-left: 10px;
+}
+
+/* reviews */
+section.places article div.reviews {
+	margin-top: 40px;
+}
+
+/* reviews list */
+section.places article div.wrapper-app div.reviews ul li {
+	display: block;
+	padding: 0;
+	margin: 0;
+
+}
+
+/* reviews typography */
+section.places article div.reviews h2 {
+	font-size: 16px;
+	border-bottom: 1px solid #DDDDDD;
+	text-align: left;
+	padding: 0 0 10px 0;
+	margin: 0;
+}
+
+section.places article div.wrapper-app div.reviews h3 {
+	font-size: 14px;
+	margin-bottom: 0;
+}
+
+section.places article div.reviews p {
+	font-size: 12px;
+	padding: 0;
+	margin: 0;
+}
+
+/* review box layout */
+section.places article div.reviews 

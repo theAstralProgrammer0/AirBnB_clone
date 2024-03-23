@@ -1,0 +1,72 @@
+0. I. 	When a user enters my website address `www.foobar.com` in their browser and hits enter, they're attempting to make a HTTP request over the 
+	internet to connect with my web server that's hosting all the resources of the website including the HTML page which will display all the features of the 
+	website on the browser (client).
+	a.) What is a server?
+		When the user hits enter, the "physical" server - hosting the website - which sits somewhere in a Hosting Company's Data Center is a computing
+		device that has the processing, storage, and networking resources required to serve up the webpage to the user. It utilizes these resources 
+		to provide the services required to deliver content (both static and dynamic) to the client. 
+		In this web infrastructure, only 1 physical server is being used. This single physical server can be configured using the "Container in a VM" 
+		strategy where a virtual machine instance running a single OS (the Linux OS) is containerized into 3 virtual containers - the web server, the 
+		application server, and the database.
+	b.) What is the role of the domain name?
+		The domain name `foobar.com` is the name mapped to the IP address of the web server that's hosting the website `www.foobar.com`. When a client 
+		provides a website address in a browser, this website address has to be resolved to an IP address - which is the IP address of the web server 
+		hosting the website - via a process called DNS lookup. The domain name is the section of the website address that provides the hierarchical 
+		information required to locate and query the 4 nameservers - resolver, root, TLD, and authoritative nameservers - which are a part of the DNS 
+		lookup infrastructure. The authoritative nameserver which has an "A Record" comprising of the IP address and the domain name of the web server in 
+		storage, provides the IP address to the client, which enables the client to establish a TCP/IP handshake with the web server hosting 
+		`www.foobar.com`.
+	c.) What type of DNS record `www` is in `www.foobar.com`
+		When the user wants to access the website using the address `www.foobar.com`, the `www` in `www.foobar.com` serves as the sudomain indicating 
+		the World Wide Web service associated with the domain `foobar.com`. When the domain `foobar.com` was registered with the domain registrar, 
+		the domain `foobar.com` was provided a subdomain `www.foobar.com`. The DNS record in `www.foobar.com` is an "A record" which maps the subdomain 
+		`www.foobar.com` to the IP address of the web server of the domain `foobar.com` hosting the website files.
+	d.) What is the role of the web server?
+		When a user attempts to access `www.foobar.com` website, the user is essentially initiating a HTTP request to the web server hosting the website.
+		The full-time job of the web server (software) is to listen for HTTP requests from clients that have its IP address - either via a DNS lookup or 
+		otherwise - and trigger the necessary service for responding to the requests in the form of a HTTP response. This principle of operation is 
+		known as the `client-server model`. After the client establishes a TCP/IP handshake with the web server, the web server parses the content of the 
+		HTTP request made by the client and serves up the corresponding HTML file either statically or dynamically. Static content delivery means that 
+		the content served by the web server is common to all clients and is not custom made for any client. In contrast, dynamic content delivery 
+		highlights the ability of a web server to initiate CGI or server-side scripts to serve up content peculiar to the client making the request. 
+		The ultimate tasks of web servers are to listen for requests on its HTTP port, parse the request, query a database (or not) to retrieve relevant 
+		data and send the response back to the client in form of HTML to be rendered by the respective front-end technology in the web infrastructure.
+	e.) What is the role of the application server?
+		The application server is tasked with the job of serving up or delivering the business logic required for server-side scripting. When a client 
+		makes a request that requires server-side scripting and application of business logic, the web server - acting as a client in the client-server 
+		model - requests for the business logic code from the application server. The application server responds to this request by serving up the code 
+		for manipulating the data in question. The web server manipulates the user data with the code received, embeds the manipulated data in the HTML, 
+		and sends a response back to the client-side for rendering of the dynamic content. An application server can either house a web server 
+		(deprecated strategy) or perform as a standalone server (widely used strategy). The latter strategy makes the business logic code more reuseable.
+	f.) What is the role of the Database?
+		When a client accesses `www.foobar.com` and creates an account, their data needs to be stored persistently (without loss). The need 
+		for this persistent storage is where databases come into play. A database refers to an organized collection of structured data. Database 
+		Management Systems (DBMSs) are used to manage and query these structured data for serving up dynamic content to the client. The DBMS used in this 
+		infrastructure is the MySQL database which is a relational database management system used to manage and query a relational database.
+		Relational databases are simple databases where data is stored in tables comprising of rows and columns. While dynamic content delivery is the 
+		optimized use of Databases in this infrastructure, they might still be used in certain scenarios for managing metadata, logging, or analytics.
+	g.) What is the server using to communicate with the computer of the user requesting the website?
+		When the user enters a website address and establishes a TCP/IP handshake with the web server via a DNS lookup, the client and server begin to 
+		communicate over the internet via the HTTP network protocol. They do this securely over the HTTPS network protocol. The HTTP protocol is a 
+		network protocol that exists at layer 3 and 4 of the OSI model.
+
+0. II.	Explanation of the issues with this infrastructure:
+	a.) SPOF:
+		Having only one virtualized server operating one web server, one application server, one application code base, and one database introduces a 
+		single point of failure. If any component within the web infrastructure fails, such as the virtualized server hardware, the containers hosting the 
+		web, application server, or the database server, the entire web application becomes inaccessible. Deploying multiple instances of each component 
+		implements redundancy thereby limiting SPOF. Utilizing load balancers to distribute traffic across the redundant instnaces also reduces risk of 
+		SPOF and it also fosters seamless failover in case of any failures thereby improving reliability.
+	b.) Downtime During Maintenance:
+		Maintenance activities, such as deploying new code or updating configurations, require the web server, application server, and possibly the 
+		database to be restarted. Having only one virtualized server operating one web server, one application server, one application code base, and one 
+		database also increases risk of longer because maintenace and recovery procedures become unnecessarily complicated. This could lead to potential 
+		loss of revenue or user trust due to low availability of service. 
+	c.) Limited Scalability:
+		Using only one virtualized server to host all components of the web application, greatly limits scalability. If there's too much incoming traffic 
+		and this traffic exceeds the capacity of the server to handle requests, the application becomes slow or unresponsive.
+		To address scalability limitations, the infrastructure can be redesigned to support horizontal scaling by deploying multiple instances of the web 
+		and application servers, and implementing clustering which involves grouping similar components of the infrastructure together.
+
+
+1. 
